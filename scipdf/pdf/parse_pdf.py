@@ -103,6 +103,7 @@ def parse_pdf(
         # assume that incoming is byte string
         parsed_article = requests.post(url, files={"input": pdf_path}).text
     else:
+        print("The input path has to be a valid URL or a valid path to a PDF file.")
         parsed_article = None
 
     if soup and parsed_article is not None:
@@ -300,7 +301,7 @@ def parse_formulas(article):
         formula_id = formula.attrs["xml:id"] or ""
         formula_text = formula.text
         formula_coordinates = formula.attrs.get("coords") or ""
-        formula_coordinates = [float(x) for x in formula_coordinates.split(",")]
+        formula_coordinates = [float(x) for x in formula_coordinates.split(",") if x]
         formulas_list.append(
             {
                 "formula_id": formula_id,
